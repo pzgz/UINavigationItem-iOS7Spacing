@@ -24,7 +24,7 @@
 
 - (void)mk_setLeftBarButtonItem:(UIBarButtonItem *)leftBarButtonItem
 {
-    if ([self isIOS7] && leftBarButtonItem) {
+    if ([self isIOS7] && leftBarButtonItem && leftBarButtonItem.image != nil && leftBarButtonItem.customView == nil) {
         [self mk_setLeftBarButtonItem:nil];
         [self mk_setLeftBarButtonItems:@[[self spacer], leftBarButtonItem]];
     } else {
@@ -37,12 +37,12 @@
 
 - (void)mk_setLeftBarButtonItems:(NSArray *)leftBarButtonItems
 {
-    if ([self isIOS7] && leftBarButtonItems && leftBarButtonItems.count > 0) {
-        
+    if ([self isIOS7] && leftBarButtonItems && leftBarButtonItems.count > 0 && ((UIBarButtonItem *)leftBarButtonItems[0]).image != nil && ((UIBarButtonItem *)leftBarButtonItems[0]).customView == nil) {
+
         NSMutableArray *items = [[NSMutableArray alloc] initWithCapacity:leftBarButtonItems.count + 1];
         [items addObject:[self spacer]];
         [items addObjectsFromArray:leftBarButtonItems];
-        
+
         [self mk_setLeftBarButtonItems:items];
     } else {
         [self mk_setLeftBarButtonItems:leftBarButtonItems];
@@ -51,7 +51,7 @@
 
 - (void)mk_setRightBarButtonItem:(UIBarButtonItem *)rightBarButtonItem
 {
-    if ([self isIOS7] && rightBarButtonItem) {
+    if ([self isIOS7] && rightBarButtonItem && rightBarButtonItem.image != nil && rightBarButtonItem.customView == nil) {
         [self mk_setRightBarButtonItem:nil];
         [self mk_setRightBarButtonItems:@[[self spacer], rightBarButtonItem]];
     } else {
@@ -64,12 +64,12 @@
 
 - (void)mk_setRightBarButtonItems:(NSArray *)rightBarButtonItems
 {
-    if ([self isIOS7] && rightBarButtonItems && rightBarButtonItems.count > 0) {
-        
+    if ([self isIOS7] && rightBarButtonItems && rightBarButtonItems.count > 0 && ((UIBarButtonItem *)rightBarButtonItems[0]).image != nil && ((UIBarButtonItem *)rightBarButtonItems[0]).customView == nil) {
+
         NSMutableArray *items = [[NSMutableArray alloc] initWithCapacity:rightBarButtonItems.count + 1];
         [items addObject:[self spacer]];
         [items addObjectsFromArray:rightBarButtonItems];
-        
+
         [self mk_setRightBarButtonItems:items];
     } else {
         [self mk_setRightBarButtonItems:rightBarButtonItems];
@@ -79,10 +79,10 @@
 + (void)mk_swizzle:(SEL)aSelector
 {
     SEL bSelector = NSSelectorFromString([NSString stringWithFormat:@"mk_%@", NSStringFromSelector(aSelector)]);
-    
+
     Method m1 = class_getInstanceMethod(self, aSelector);
     Method m2 = class_getInstanceMethod(self, bSelector);
-    
+
     method_exchangeImplementations(m1, m2);
 }
 
